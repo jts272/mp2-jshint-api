@@ -36,7 +36,7 @@ document
 
 async function getStatus(e) {
   // This string is used to pass to the fetch() method. It is ultimately the URL
-  // required from the SWAPI API documentation for GET requests.
+  // required from the CI JSHint API documentation for GET requests.
   const queryString = `${API_URL}?api_key=${API_KEY}`;
   // Call the fetch request:
   const response = await fetch(queryString);
