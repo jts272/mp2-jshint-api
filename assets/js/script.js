@@ -45,6 +45,29 @@ async function getStatus(e) {
 
   // Check the 'ok' property of the response obj
   if (response.ok) {
-    console.log(data.expiry);
+    // Show 'expiry' property of the data obj
+    // console.log(data.expiry);
+    // Pass this information to the displayStatus function (defined below):
+    displayStatus(data.expiry);
   }
+  // Show the descriptive 'error' property returned in JSON:
+  else {
+    // Test error handling by deliberately changing to a wrong API key:
+    throw new Error(data.error);
+  }
+}
+
+function displayStatus(data) {
+  // The 'data' param stands in for 'data.expiry' when it is called from the if
+  // block of the getStatus function.
+  const resultsModalTitle = document.getElementById("resultsModalTitle");
+  const resultsContent = document.getElementById("results-content");
+
+  resultsModalTitle.textContent = "API Key Status";
+  resultsContent.innerHTML = `
+  <p>Your key is valid until:</p>
+  <p>${data}</p>
+  `;
+
+  resultsModal.show();
 }
