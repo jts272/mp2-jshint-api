@@ -4,9 +4,17 @@ const resultsModal = new bootstrap.Modal(
   document.getElementById("resultsModal")
 );
 
+// Add event listener to the 'Check Key' button:
+
 document
   .getElementById("status")
   .addEventListener("click", (event) => getStatus(event));
+
+// Add event listener to the 'Run Checks' button:
+
+document
+  .getElementById("submit")
+  .addEventListener("click", (event) => postForm(event));
 
 // What two things does the getStatus() function need to do?
 
@@ -70,4 +78,31 @@ function displayStatus(data) {
   `;
 
   resultsModal.show();
+}
+
+// Create a function to make the request
+// Create a function to display the data
+
+async function postForm(e) {
+  // Get id of form to pass to FormData obj:
+  const form = new FormData(document.getElementById("checksform"));
+  // Iterate over the FormData obj to confirm it has captured correctly using
+  // built-in FormData methods:
+  // for (let entry of form.entries()) {
+  //   console.log(entry);
+  // }
+
+  // Code copied from CI JSHint docs (add 'await' kw before fetch()).
+  // Hardcoded URL reference substituted with the API_KEY const:
+  const response = await fetch(API_KEY, {
+    method: "POST",
+    headers: {
+      Authorization: API_KEY,
+    },
+    // After the headers, this code sends the form data to the API to:
+    // 1. Make a POST request to the API
+    // 2. Auth it with the API key
+    // 3. Attach the form as the body of the request
+    body: form,
+  });
 }
