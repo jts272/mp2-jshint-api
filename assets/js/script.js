@@ -112,7 +112,53 @@ async function postForm(e) {
 
   if (response.ok) {
     console.log(data);
+    // Instead, call displayErrors():
+    displayErrors(data);
   } else {
     throw new Error(data.error);
   }
+}
+
+function displayErrors(data) {
+  // Set heading:
+  let heading = `JSHint Results for ${data.file}:`;
+  let results;
+
+  if (data.total_errors === 0) {
+    results = `<div class="no_errors">No errors reported!</div>`;
+  } else {
+    results = `
+    <div>
+      Total Errors: <span class="error-count">${data.total_errors}</span>
+    </div>`;
+    // Loop through the error_list (found in the console log) and add each
+    // error as a div to display to the user, by adding to the existing results
+    // var:
+    for (let error of data.error_list) {
+      results += `<div>At line <span class="line">${error.line}</span>, `;
+      results += `column <span class="column">${error.col}</span></div>`;
+      results += `<div class="error">${error.error}</div>`;
+    }
+  }
+  // CHALLENGE:
+  // 1. Set heading in modal
+  // 2. Set content in modal
+  // 3. Display the modal
+
+  // Copied and adjusted from displayStatus()
+
+  // const resultsModalTitle = document.getElementById("resultsModalTitle");
+  // const resultsContent = document.getElementById("results-content");
+
+  // resultsModalTitle.textContent = heading;
+  // resultsContent.innerHTML = results;
+
+  // document.querySelector("#submit").addEventListener("click", () => {
+  //   resultsModal.show();
+
+  // ANSWER:
+
+  document.getElementById("resultsModalTitle").innerText = heading;
+  document.getElementById("results-content").innerHTML = results;
+  resultsModal.show();
 }
