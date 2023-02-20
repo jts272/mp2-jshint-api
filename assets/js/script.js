@@ -93,8 +93,8 @@ async function postForm(e) {
   // }
 
   // Code copied from CI JSHint docs (add 'await' kw before fetch()).
-  // Hardcoded URL reference substituted with the API_KEY const:
-  const response = await fetch(API_KEY, {
+  // Hardcoded URL reference substituted with the API_URL const:
+  const response = await fetch(API_URL, {
     method: "POST",
     headers: {
       Authorization: API_KEY,
@@ -105,4 +105,14 @@ async function postForm(e) {
     // 3. Attach the form as the body of the request
     body: form,
   });
+
+  // Convert to JSON:
+
+  const data = await response.json();
+
+  if (response.ok) {
+    console.log(data);
+  } else {
+    throw new Error(data.error);
+  }
 }
