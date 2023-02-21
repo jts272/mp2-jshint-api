@@ -80,12 +80,45 @@ function displayStatus(data) {
   resultsModal.show();
 }
 
+// Create a function to process the form options, which need to be sent as csv,
+// instead of ["option, "name"], ["option", "name"] etc.
+
+// LESSON STEPS:
+
+// 1. Iterate through the options
+// 2. Push each value into a temporary array
+// 3. Convert the array back to a string
+
+function processOptions(form) {
+  // Initialize temporary empty array:
+  let optArray = [];
+  // If the first key of the entries is 'options' (which it always is here),
+  // push the just the value. E.g. ["options", "es6"] will just push "es6".
+  for (let entry of form.entries()) {
+    if (entry[0] === "options") {
+      optArray.push(entry[1]);
+    }
+  }
+  // Use a FormData method to delete all preexisting 'options' occurrences:
+  form.delete("options");
+  // Now append a 'new' options key, with the array of options. The join()
+  // method is used on the completed temporary array to convert it back to a
+  // string, and by default, separate values with a comma (csv).
+  form.append("options", optArray.join());
+
+  return form;
+}
+
 // Create a function to make the request
 // Create a function to display the data
 
 async function postForm(e) {
   // Get id of form to pass to FormData obj:
-  const form = new FormData(document.getElementById("checksform"));
+  // const form = new FormData(document.getElementById("checksform"));
+  // Change this const to be processed by the processOptions function
+  const form = processOptions(
+    new FormData(document.getElementById("checksform"))
+  );
   // Iterate over the FormData obj to confirm it has captured correctly using
   // built-in FormData methods:
   // for (let entry of form.entries()) {
