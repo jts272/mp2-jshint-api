@@ -148,7 +148,10 @@ async function postForm(e) {
     // Instead, call displayErrors():
     displayErrors(data);
   } else {
-    throw new Error(data.error);
+    // throw new Error(data.error);
+    // Instead of throwing the error in this else block, call the new
+    // displayExceptions() fn.
+    displayExceptions(data);
   }
 }
 
@@ -191,6 +194,44 @@ function displayErrors(data) {
 
   // ANSWER:
 
+  document.getElementById("resultsModalTitle").innerText = heading;
+  document.getElementById("results-content").innerHTML = results;
+  resultsModal.show();
+}
+
+// CODEALONG CHALLENGE:
+
+// Build functionality to:
+// 1. Keep errors displaying in console (good practice).
+// 2. Create displayExceptions() fn to display the exception in the modal.
+
+// Expected output:
+// 1. Standard modal with the heading of "An Exception Occurred".
+// 2. Contents = status code, error number and error text.
+
+// Questions to ask:
+// How do I get the values from JSON data?
+// What can I use from preexisting display functions?
+
+function displayExceptions(data) {
+  // Keep the code that throws the error in the console:
+  // throw new Error(data.error);
+
+  console.log(data);
+
+  // Define modal content:
+  let heading = "An Exception Occurred";
+  let results = "";
+
+  // console.log(typeof data);
+  // > object
+
+  for (let [key, value] of Object.entries(data)) {
+    // console.log(`${key}: ${value}`);
+    results += `<div>${key}: ${value}</div>`;
+  }
+
+  // Copied code to display the modal content:
   document.getElementById("resultsModalTitle").innerText = heading;
   document.getElementById("results-content").innerHTML = results;
   resultsModal.show();
