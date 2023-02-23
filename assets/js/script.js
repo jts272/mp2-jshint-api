@@ -61,6 +61,8 @@ async function getStatus(e) {
   // Show the descriptive 'error' property returned in JSON:
   else {
     // Test error handling by deliberately changing to a wrong API key:
+    // ANSWER: Also call the displayExceptions() fn before the throw here:
+    displayExceptions(data);
     throw new Error(data.error);
   }
 }
@@ -152,6 +154,8 @@ async function postForm(e) {
     // Instead of throwing the error in this else block, call the new
     // displayExceptions() fn.
     displayExceptions(data);
+    // ANSWER: throw /after/ calling the above fn:
+    throw new Error(data.error);
   }
 }
 
@@ -213,25 +217,45 @@ function displayErrors(data) {
 // How do I get the values from JSON data?
 // What can I use from preexisting display functions?
 
+// MY FUNCTION
+
+// function displayExceptions(data) {
+//   // Keep the code that throws the error in the console:
+//   // throw new Error(data.error);
+
+//   console.log(data);
+
+//   // Define modal content:
+//   let heading = "An Exception Occurred";
+//   let results = "";
+
+//   // console.log(typeof data);
+//   // > object
+
+//   for (let [key, value] of Object.entries(data)) {
+//     // console.log(`${key}: ${value}`);
+//     results += `<div>${key}: ${value}</div>`;
+//   }
+
+//   // Copied code to display the modal content:
+//   document.getElementById("resultsModalTitle").innerText = heading;
+//   document.getElementById("results-content").innerHTML = results;
+//   resultsModal.show();
+// }
+
+// ANSWER FUNCTION:
+
+// Does not loop entries. Instead uses template literals and accesses the
+// relevant object property directly. Allows use of custom formatting this way.
+
 function displayExceptions(data) {
-  // Keep the code that throws the error in the console:
-  // throw new Error(data.error);
+  let heading = `An Exception Occurred`;
+  let results;
 
-  console.log(data);
+  results = `<div>The API returned status code ${data.status_code}</div>`;
+  results += `<div>Error number: <strong>${data.error_no}</strong></div>`;
+  results += `<div>Error text: <strong>${data.error}</strong></div>`;
 
-  // Define modal content:
-  let heading = "An Exception Occurred";
-  let results = "";
-
-  // console.log(typeof data);
-  // > object
-
-  for (let [key, value] of Object.entries(data)) {
-    // console.log(`${key}: ${value}`);
-    results += `<div>${key}: ${value}</div>`;
-  }
-
-  // Copied code to display the modal content:
   document.getElementById("resultsModalTitle").innerText = heading;
   document.getElementById("results-content").innerHTML = results;
   resultsModal.show();
